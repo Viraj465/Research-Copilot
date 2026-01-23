@@ -67,14 +67,14 @@ def direction_advisor_node(state: OverallState) -> OverallState:
         
         analysis = structured_llm.invoke(prompt.format_messages(
             level3=level3[:3000],
-            level2=level2[:5000],
-            contributions=", ".join([str(c) for c in contributions[:]]),
-            limitations=", ".join([str(l) for l in limitations[:]]),
-            domains=", ".join([str(d) for d in domain_tags[:]]),
-            key_players=", ".join([str(p) for p in key_players[:]]) if key_players else "N/A",
-            trends=str(trend_signals)[:5000] if trend_signals else "N/A",
-            sota=str(sota_tracker.get("sota_tracker_summary", ""))[:5000] if sota_tracker else "N/A",
-            comparative=str(comparative_analysis.get("comparative_analysis_summary", ""))[:5000] if comparative_analysis else "N/A"
+            level2=level2[:3000],
+            contributions=", ".join([str(c) for c in contributions[:5]]),
+            limitations=", ".join([str(l) for l in limitations[:5]]),
+            domains=", ".join([str(d) for d in domain_tags[:5]]),
+            key_players=", ".join([str(p) for p in key_players[:5]]) if key_players else "N/A",
+            trends=str(trend_signals)[:2000] if trend_signals else "N/A",
+            sota=str(sota_tracker.get("sota_tracker_summary", ""))[:2000] if sota_tracker else "N/A",
+            comparative=str(comparative_analysis.get("comparative_analysis_summary", ""))[:2000] if comparative_analysis else "N/A"
         ))
 
         direction_advisor_result = analysis.dict()
