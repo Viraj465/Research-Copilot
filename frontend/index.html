@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research Copilot | AI Research Platform</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Marked.js for Markdown -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <!-- DOMPurify -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.8/purify.min.js"></script>
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0f172a',
+                        secondary: '#334155',
+                        accent: '#3b82f6',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-gray-50 text-slate-900 min-h-screen font-sans">
+
+    <!-- Header -->
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <i data-lucide="microscope" class="w-6 h-6 text-accent"></i>
+                <h1 class="text-xl font-bold tracking-tight">Research Copilot <i><sup
+                            class="text-orange-400 text-2xs bg-orange-200 px-1 rounded">BETA</sup></i></h1>
+            </div>
+            <div class="flex items-center gap-4">
+                <!-- Auth UI -->
+                <div id="auth-container" class="hidden flex items-center gap-3">
+                    <span id="user-email" class="text-sm text-gray-600 hidden sm:block"></span>
+                    <button id="sign-out-btn" class="text-sm text-red-600 hover:text-red-700 font-medium">Sign
+                        Out</button>
+                    <img id="user-avatar" class="w-8 h-8 rounded-full border border-gray-200" src="" alt="Avatar">
+                </div>
+                <button id="sign-in-btn"
+                    class="bg-slate-900 hover:bg-slate-800 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                    Sign In
+                </button>
+
+                <div class="w-px h-6 bg-gray-200 mx-2"></div>
+
+                <button id="config-btn" class="p-2 rounded-md hover:bg-gray-100 text-gray-600 transition-colors">
+                    <i data-lucide="settings" class="w-5 h-5"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- View: Start Session -->
+        <section id="view-start" class="max-w-2xl mx-auto text-center space-y-8">
+            <div class="space-y-4">
+                <h2 class="text-4xl font-extrabold text-slate-900">Deep Research Assistant</h2>
+                <p class="text-lg text-slate-600">Analyze complex research papers with multi-agent AI.</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 space-y-6">
+                <!-- URL Input -->
+                <div class="space-y-2 text-left">
+                    <label class="text-sm font-medium text-gray-700">Paper URL (PDF)</label>
+                    <div class="flex gap-2">
+                        <input type="url" id="paper-url" placeholder="https://arxiv.org/pdf/..."
+                            class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent outline-none transition-all">
+                        <button id="start-url-btn"
+                            class="bg-accent hover:bg-blue-600 text-white px-6 py-2 rounded-lg font-medium transition-colors flex items-center gap-2">
+                            <span>Analyze</span>
+                            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-3 mt-3">
+                        <p class="text-xs text-blue-900 font-medium mb-2">📄 Supported PDF Sources:</p>
+                        <ul class="text-xs text-blue-800 space-y-1 ml-4">
+                            <li>✓ arXiv papers: <code class="bg-blue-100 px-1 rounded">https://arxiv.org/pdf/...</code>
+                            </li>
+                            <li>✓ Direct PDF links (open-access)</li>
+                            <li>✓ ResearchGate, GitHub, institutional repositories</li>
+                            <li>✗ Paywalled PDFs (ScienceDirect, IEEE, ACM, etc.)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- File upload removed from frontend -->
+            </div>
+        </section>
+
+        <!-- View: Processing (Dark Mode Canvas) -->
+        <section id="view-processing" class="hidden">
+            <div class="fixed inset-0 bg-slate-800 z-40 flex items-center justify-center p-8">
+                <!-- Canvas Window -->
+                <div
+                    class="w-full max-w-5xl bg-slate-950 rounded-2xl shadow-2xl border border-slate-700 overflow-hidden flex flex-col max-h-[90vh]">
+
+                    <!-- Titlebar -->
+                    <div class="bg-slate-900 px-4 py-3 flex items-center gap-4 border-b border-slate-700 flex-shrink-0">
+                        <!-- Traffic Lights -->
+                        <div class="flex items-center gap-2">
+                            <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                        </div>
+
+                        <!-- Search Bar -->
+                        <div class="flex-1">
+                            <div class="relative">
+                                <i data-lucide="search"
+                                    class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500"></i>
+                                <input type="text" id="canvas-search" placeholder="Search in output..."
+                                    class="w-full bg-slate-800 rounded-lg pl-10 pr-4 py-1.5 text-sm text-slate-300 placeholder-slate-500 border border-slate-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none">
+                            </div>
+                        </div>
+
+                        <!-- Timer -->
+                        <span id="timer" class="text-sm text-slate-400 font-mono">00:00</span>
+                    </div>
+
+                    <!-- Live Output Canvas -->
+                    <div id="live-canvas" class="flex-1 p-6 bg-slate-900 overflow-y-auto">
+                        <div id="canvas-content" class="prose prose-invert prose-sm max-w-none text-slate-300">
+                            <!-- Streamed content will be rendered here as Markdown -->
+                            <p class="text-slate-500 italic">Initializing research pipeline...</p>
+                        </div>
+                        <span id="canvas-cursor" class="inline-block w-2 h-5 bg-blue-400 animate-pulse ml-1"></span>
+                    </div>
+
+                    <!-- Status Bar -->
+                    <div
+                        class="bg-slate-900 px-4 py-2 border-t border-slate-700 flex items-center justify-between text-xs text-slate-500 flex-shrink-0">
+                        <span id="current-agent" class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
+                            <span>Waiting...</span>
+                        </span>
+                        <button id="logs-toggle" class="cursor-pointer hover:text-slate-300 flex items-center gap-1">
+                            <i data-lucide="terminal" class="w-3 h-3"></i>
+                            <span>Toggle Logs</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Collapsible Logs Panel -->
+                <div id="logs-panel" class="fixed bottom-4 left-1/2 -translate-x-1/2 w-full max-w-5xl hidden">
+                    <div class="bg-slate-950 rounded-xl border border-slate-700 overflow-hidden">
+                        <div id="logs-container"
+                            class="h-48 overflow-y-auto p-4 font-mono text-xs text-green-400 space-y-1 scrollbar-thin">
+                            <!-- Logs -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- View: Report -->
+        <section id="view-report" class="hidden space-y-6">
+            <div class="flex items-center justify-between">
+                <h2 id="report-title" class="text-2xl font-bold text-slate-900">Research Report</h2>
+                <div class="flex gap-2">
+                    <button id="new-session-btn"
+                        class="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-50">
+                        New Analysis
+                    </button>
+                    <button id="export-btn"
+                        class="px-4 py-2 text-sm font-medium text-white bg-slate-900 hover:bg-slate-800 rounded-lg flex items-center gap-2">
+                        <i data-lucide="download" class="w-4 h-4"></i>
+                        Export Report
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden min-h-[600px] flex">
+                <!-- Sidebar Tabs -->
+                <div class="w-64 bg-gray-50 border-r border-gray-200 flex-shrink-0">
+                    <nav class="p-4 space-y-1" id="report-tabs">
+                        <!-- Tabs injected here -->
+                    </nav>
+                </div>
+
+                <!-- Content Area -->
+                <div class="flex-1 p-8 overflow-y-auto relative">
+                    <div id="report-content" class="prose prose-slate max-w-none">
+                        <!-- Markdown content injected here -->
+                    </div>
+
+                    <!-- Deep Dive Chat Button (Floating) -->
+                    <button id="deep-dive-trigger"
+                        class="fixed bottom-8 right-8 bg-accent hover:bg-blue-600 text-white p-4 rounded-full shadow-lg transition-transform hover:scale-105 flex items-center gap-2">
+                        <i data-lucide="message-square-plus" class="w-6 h-6"></i>
+                        <span class="font-medium">Deep Dive</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Auth Modal -->
+    <div id="auth-modal"
+        class="fixed inset-0 bg-black/50 z-[100] hidden flex items-center justify-center backdrop-blur-sm">
+        <div
+            class="bg-white rounded-xl shadow-2xl w-full max-w-sm p-6 space-y-6 transform transition-all scale-100 text-center">
+            <div class="space-y-2">
+                <h3 class="text-xl font-bold text-gray-900">Welcome Back</h3>
+                <p class="text-sm text-gray-500">Sign in to save your research history</p>
+            </div>
+
+            <div class="space-y-3">
+                <button id="auth-google-btn"
+                    class="w-full flex items-center justify-center gap-3 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+                    <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-5 h-5" alt="Google">
+                    <span class="text-sm font-medium text-gray-700">Continue with Google</span>
+                </button>
+                <button id="auth-github-btn"
+                    class="w-full flex items-center justify-center gap-3 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+                    <img src="https://www.svgrepo.com/show/512317/github-142.svg" class="w-5 h-5" alt="GitHub">
+                    <span class="text-sm font-medium text-gray-700">Continue with GitHub</span>
+                </button>
+            </div>
+
+            <button id="close-auth" class="text-sm text-gray-400 hover:text-gray-600">Cancel</button>
+        </div>
+    </div>
+
+    <!-- Config Modal -->
+    <div id="config-modal"
+        class="fixed inset-0 bg-black/50 z-[100] hidden flex items-center justify-center backdrop-blur-sm">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-md p-6 space-y-6 transform transition-all scale-100">
+            <div class="flex items-center justify-between">
+                <h3 class="text-lg font-semibold">Settings</h3>
+                <button id="close-config" class="text-gray-400 hover:text-gray-600">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <div class="space-y-4 max-h-[60vh] overflow-y-auto pr-2">
+                <!-- Global Settings -->
+                <div class="bg-gray-50 p-4 rounded-lg space-y-4">
+                    <h4 class="text-sm font-semibold text-gray-900 uppercase tracking-wider">Global Defaults</h4>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">LLM Provider</label>
+                        <select id="llm-provider"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent outline-none">
+                            <option value="groq">Groq</option>
+                            <option value="google">Google Gemini</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Model</label>
+                        <select id="llm-model"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent outline-none">
+                            <!-- Populated by JS -->
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Groq API Key</label>
+                        <input type="password" id="api-key-groq" placeholder="gsk_..."
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent outline-none">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Google API Key</label>
+                        <input type="password" id="api-key-google" placeholder="AIza..."
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent outline-none">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">OpenAI API Key</label>
+                        <input type="password" id="api-key-openai" placeholder="sk-..."
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent outline-none">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Tavily API Key <sup
+                                class="text-red">*</sup></label>
+                        <input type="password" id="api-key-tavily" placeholder="tvly-dev-..."
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent outline-none"
+                            required>
+                        <p class="text-xs text-gray-500 mt-1">Keys are stored in memory only.</p>
+                    </div>
+                </div>
+
+                <!-- Agent Overrides -->
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between">
+                        <h4 class="text-sm font-semibold text-gray-900 uppercase tracking-wider">Agent Overrides</h4>
+                        <button id="toggle-advanced" class="text-xs text-accent hover:underline">Show/Hide</button>
+                    </div>
+
+                    <div id="advanced-settings" class="hidden space-y-4">
+                        <!-- Agent Configs injected here -->
+                    </div>
+                </div>
+            </div>
+
+            <button id="save-config"
+                class="w-full bg-slate-900 hover:bg-slate-800 text-white py-2 rounded-lg font-medium">
+                Save Configuration
+            </button>
+        </div>
+    </div>
+
+    <!-- Deep Dive Chat Drawer -->
+    <div id="chat-drawer"
+        class="fixed inset-y-0 right-0 w-96 bg-white shadow-2xl z-[90] transform translate-x-full transition-transform duration-300 flex flex-col border-l border-gray-200">
+        <div class="p-4 border-b border-gray-200 flex items-center justify-between bg-gray-50">
+            <h3 class="font-semibold flex items-center gap-2">
+                <i data-lucide="message-circle" class="w-4 h-4 text-accent"></i>
+                Deep Dive Chat
+            </h3>
+            <button id="close-chat" class="text-gray-400 hover:text-gray-600">
+                <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+        </div>
+
+        <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50/50">
+            <!-- Messages injected here -->
+            <div class="text-center text-sm text-gray-500 mt-10">
+                Ask questions about the <span id="chat-context-name" class="font-medium text-gray-900">current
+                    section</span>.
+            </div>
+        </div>
+
+        <div class="p-4 border-t border-gray-200 bg-white">
+            <form id="chat-form" class="flex gap-2">
+                <input type="text" id="chat-input" placeholder="Ask a follow-up question..."
+                    class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent outline-none text-sm">
+                <button type="submit" class="bg-accent hover:bg-blue-600 text-white p-2 rounded-lg">
+                    <i data-lucide="send" class="w-4 h-4"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <footer class="text-center text-xs text-gray-500 mt-10">
+        <p>© 2026 Research Copilot. All rights reserved.</p>
+        <i>
+            <b class="text-red-400">
+                Research Copilot can make mistakes. Use it responsibly.
+            </b>
+            <p class="text-xs">Use different LLMs for different tasks. If using free tier you can get rate limited.</p>
+        </i>
+    </footer>
+    <!-- Scripts -->
+    <script type="module" src="js/app.js"></script>
+</body>
+
+</html>

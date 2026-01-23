@@ -1,0 +1,64 @@
+
+# --- Deep Learning & Research Implementation ---
+torch==2.7.0 --extra-index-url https://download.pytorch.org/whl/cu128
+torchvision>=0.17.0    # For analyzing charts/images in research papers
+torchaudio>=2.2.0      # (Optional) For speech-related research papers
+transformers>=4.36.0
+
+# --- AI Agent Orchestration & State Management ---
+langchain>=0.3.0
+langchain-openai>=0.2.0
+langchain-community>=0.3.0    # For third-party integrations (Arxiv, Wikipedia, etc.)
+langchain-text-splitters>=0.3.0
+langgraph>=0.2.0              # For cyclic, stateful multi-agent workflows
+python-dotenv>=1.0.0    # Management of API keys and environment variables
+langsmith>=0.5.2
+langchain-google-genai
+
+# --- Cloud Infrastructure & Database ---
+supabase>=2.10.0              # DB, Auth, and Vector Store (pgvector)
+pyjwt>=2.8.0                  # JWT token verification for Supabase auth
+aioboto3>=1.34.0                 # AWS SDK for S3 (PDF storage) and Bedrock (Alternative LLMs)
+vecs>=0.4.0                   # Supabase/Postgres vector python client
+
+# --- Paper Analysis & PDF Processing  ---
+pymupdf>=1.23.0         # PDF parsing and metadata extraction 
+pdfplumber>=0.10.0      # Specialized extraction for methodology tables and charts 
+tiktoken>=0.5.0         # Token counting for long academic paper analysis
+
+# --- Web Research & Source Aggregation [cite: 2, 3] ---
+beautifulsoup4>=4.12.0  # Web scraping for blogs and industry reports 
+requests>=2.31.0        # Handling API calls to Google Scholar and news sources 
+duckduckgo-search>=4.0  # Zero-cost web search integration for real-time trends 
+google-search-results   # SerpApi for advanced academic and news aggregation 
+
+# --- Market Intelligence & Data Visualization  ---
+pandas>=2.1.0           # TAM/SAM/SOM calculations and growth rate analysis [cite: 4]
+numpy>=1.26.0           # Numerical analysis for market sizing and CAGR projections [cite: 4]
+plotly>=5.18.0          # Interactive competitive positioning maps and citation networks 
+networkx>=3.2.0         # Visualization of citation networks (Phase 2) [cite: 4]
+
+# --- Report Generation & Export  ---
+fpdf2>=2.7.0            # PDF report generation with structured sections 
+python-docx>=1.1.0      # DOCX export for executive summaries and findings 
+bibtexparser>=1.4.0     # Citation management (APA, MLA, Chicago formatting) 
+
+# --- Paper to Code & Engineering Features ---
+sympy>=1.12             # Symbolic math parsing for methodology-to-code conversion
+black>=23.12.0          # Auto-formatting for AI-generated Python code
+pygments>=2.17.0        # Syntax highlighting for the UI code editor
+
+# --- Integration & Phase 3 Features [cite: 5] ---
+notion-client>=2.2.0    # Exporting research notes to Notion [cite: 5]
+fastapi>=0.104.0        # Backend API for the Figma-designed UI
+uvicorn>=0.24.0         # High-performance ASGI server
+
+# --- State Management & Caching ---
+redis>=5.0.0            # Key-value store for agent memory and session state
+celery>=5.3.0           # Distributed task queue for long-running research tasks
+
+# For ChromaDB
+chromadb>=0.4.0
+
+# for real-time, ai-optimized web search capabilities used for RAG
+tavily-python>=0.7.12

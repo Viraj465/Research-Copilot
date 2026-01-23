@@ -1,0 +1,13 @@
+.env
+venv/
+AgentFlow.drawio
+AgentFlow.png
+AgentFlowv3.png
+*.zip
+*.md
+.txt
+*.png
+*.json
+__pycache__
+__pycache__/
+*.drawio
