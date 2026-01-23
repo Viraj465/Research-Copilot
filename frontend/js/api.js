@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://localhost:8000/api';
+const API_BASE_URL = 'https://viraj0112-research-copilot.hf.space/api';
 
 export const api = {
     token: null,
@@ -24,7 +24,7 @@ export const api = {
         // Import and add API keys to llmConfig
         const { getApiKeys } = await import('./config.js');
         const apiKeys = getApiKeys();
-        
+
         const configWithKeys = {
             ...llmConfig,
             api_keys: apiKeys

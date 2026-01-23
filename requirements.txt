@@ -14,6 +14,9 @@ langgraph>=0.2.0              # For cyclic, stateful multi-agent workflows
 python-dotenv>=1.0.0    # Management of API keys and environment variables
 langsmith>=0.5.2
 langchain-google-genai
+langchain-groq>=0.1.0
+python-multipart>=0.0.9
+httpx>=0.27.0
 
 # --- Cloud Infrastructure & Database ---
 supabase>=2.10.0              # DB, Auth, and Vector Store (pgvector)
