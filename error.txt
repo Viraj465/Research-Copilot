@@ -1,0 +1,113 @@
+INFO:utils.auth:✅ JWKS client initialized for https://nrzbagnazxvxtjftdpvn.supabase.co/auth/v1/.well-known/jwks.json
+INFO:main:Creating session for authenticated user: c30460ee-9234-48d2-9a9d-31022687abc5
+INFO:httpx:HTTP Request: POST https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/sessions "HTTP/2 201 Created"
+INFO:utils.supabase_store:✅ Session created in Supabase: 27531dfa-6fba-48bb-84ef-e3476f0bbc4e
+INFO:httpx:HTTP Request: POST https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/messages "HTTP/2 201 Created"
+INFO:httpx:HTTP Request: POST https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/messages "HTTP/2 201 Created"
+INFO:     10.16.14.243:41921 - "POST /api/sessions/start-url HTTP/1.1" 200 OK
+INFO:main:🔄 Stream endpoint called for session: 27531dfa-6fba-48bb-84ef-e3476f0bbc4e
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/sessions?select=%2A&id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e "HTTP/2 200 OK"
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/messages?select=%2A&session_id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e&order=timestamp.asc "HTTP/2 200 OK"
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/deep_dive_messages?select=%2A&session_id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e&order=timestamp.asc "HTTP/2 200 OK"
+INFO:     10.16.14.243:41921 - "GET /api/sessions/27531dfa-6fba-48bb-84ef-e3476f0bbc4e/stream?token=eyJhbGciOiJFUzI1NiIsImtpZCI6Ijg0NTUyOTVlLTQ3MDQtNGYxNC04ZGU3LTE0NTYxYjFmNjE4YSIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL25yemJhZ25henh2eHRqZnRkcHZuLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiJjMzA0NjBlZS05MjM0LTQ4ZDItOWE5ZC0zMTAyMjY4N2FiYzUiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzY5MjUyODQ4LCJpYXQiOjE3NjkyNDkyNDgsImVtYWlsIjoic2F3YW50dmlyYWo0NjVAZ21haWwuY29tIiwicGhvbmUiOiIiLCJhcHBfbWV0YWRhdGEiOnsicHJvdmlkZXIiOiJnb29nbGUiLCJwcm92aWRlcnMiOlsiZ29vZ2xlIl19LCJ1c2VyX21ldGFkYXRhIjp7ImF2YXRhcl91cmwiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NLaGdkMWJrcUlWemFmQTdnLVRDdmtpVEtXWDkwaFRZcWVlQ2lxcjE1NkstRDl3YmpBPXM5Ni1jIiwiZW1haWwiOiJzYXdhbnR2aXJhajQ2NUBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZnVsbF9uYW1lIjoidmlyYWFqIHNhd2FudCIsImlzcyI6Imh0dHBzOi8vYWNjb3VudHMuZ29vZ2xlLmNvbSIsIm5hbWUiOiJ2aXJhYWogc2F3YW50IiwicGhvbmVfdmVyaWZpZWQiOmZhbHNlLCJwaWN0dXJlIjoiaHR0cHM6Ly9saDMuZ29vZ2xldXNlcmNvbnRlbnQuY29tL2EvQUNnOG9jS2hnZDFia3FJVnphZkE3Zy1UQ3ZraVRLV1g5MGhUWXFlZUNpcXIxNTZLLUQ5d2JqQT1zOTYtYyIsInByb3ZpZGVyX2lkIjoiMTA3NjQ2OTM2MTIwMzY0MDI1MzE3Iiwic3ViIjoiMTA3NjQ2OTM2MTIwMzY0MDI1MzE3In0sInJvbGUiOiJhdXRoZW50aWNhdGVkIiwiYWFsIjoiYWFsMSIsImFtciI6W3sibWV0aG9kIjoib2F1dGgiLCJ0aW1lc3RhbXAiOjE3NjkyNDkyNDh9XSwic2Vzc2lvbl9pZCI6IjRmZGNhNGZjLWY5YmYtNGRiNS1iYjA3LTk3NDMzNzc3ZWU5OCIsImlzX2Fub255bW91cyI6ZmFsc2V9.OjaWPfZiA4B9rZJLJDpXSX2B6h7HLtwbFjz4x-4pBrv_53KM9VxJDdmCztjqX_bUjBwEFBiV_Tg_EvgJqudnlA HTTP/1.1" 403 Forbidden
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/sessions?select=%2A&id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e "HTTP/2 200 OK"
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/messages?select=%2A&session_id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e&order=timestamp.asc "HTTP/2 200 OK"
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/deep_dive_messages?select=%2A&session_id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e&order=timestamp.asc "HTTP/2 200 OK"
+INFO:     10.16.14.243:41921 - "GET /api/sessions/27531dfa-6fba-48bb-84ef-e3476f0bbc4e HTTP/1.1" 200 OK
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/sessions?select=%2A&id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e "HTTP/2 200 OK"
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/messages?select=%2A&session_id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e&order=timestamp.asc "HTTP/2 200 OK"
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/deep_dive_messages?select=%2A&session_id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e&order=timestamp.asc "HTTP/2 200 OK"
+INFO:     10.16.42.137:62321 - "GET /api/sessions/27531dfa-6fba-48bb-84ef-e3476f0bbc4e HTTP/1.1" 200 OK
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/sessions?select=%2A&id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e "HTTP/2 200 OK"
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/messages?select=%2A&session_id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e&order=timestamp.asc "HTTP/2 200 OK"
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/deep_dive_messages?select=%2A&session_id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e&order=timestamp.asc "HTTP/2 200 OK"
+INFO:     10.16.42.137:62321 - "GET /api/sessions/27531dfa-6fba-48bb-84ef-e3476f0bbc4e HTTP/1.1" 200 OK
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/sessions?select=%2A&id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e "HTTP/2 200 OK"
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/messages?select=%2A&session_id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e&order=timestamp.asc "HTTP/2 200 OK"
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/deep_dive_messages?select=%2A&session_id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e&order=timestamp.asc "HTTP/2 200 OK"
+INFO:     10.16.42.137:62321 - "GET /api/sessions/27531dfa-6fba-48bb-84ef-e3476f0bbc4e HTTP/1.1" 200 OK
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/sessions?select=%2A&id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e "HTTP/2 200 OK"
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/messages?select=%2A&session_id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e&order=timestamp.asc "HTTP/2 200 OK"
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/deep_dive_messages?select=%2A&session_id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e&order=timestamp.asc "HTTP/2 200 OK"
+INFO:     10.16.42.137:62321 - "GET /api/sessions/27531dfa-6fba-48bb-84ef-e3476f0bbc4e HTTP/1.1" 200 OK
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/sessions?select=%2A&id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e "HTTP/2 200 OK"
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/messages?select=%2A&session_id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e&order=timestamp.asc "HTTP/2 200 OK"
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/deep_dive_messages?select=%2A&session_id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e&order=timestamp.asc "HTTP/2 200 OK"
+INFO:     10.16.42.137:62321 - "GET /api/sessions/27531dfa-6fba-48bb-84ef-e3476f0bbc4e HTTP/1.1" 200 OK
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/sessions?select=%2A&id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e "HTTP/2 200 OK"
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/messages?select=%2A&session_id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e&order=timestamp.asc "HTTP/2 200 OK"
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/deep_dive_messages?select=%2A&session_id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e&order=timestamp.asc "HTTP/2 200 OK"
+INFO:     10.16.14.243:50784 - "GET /api/sessions/27531dfa-6fba-48bb-84ef-e3476f0bbc4e HTTP/1.1" 200 OK
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/sessions?select=%2A&id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e "HTTP/2 200 OK"
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/messages?select=%2A&session_id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e&order=timestamp.asc "HTTP/2 200 OK"
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/deep_dive_messages?select=%2A&session_id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e&order=timestamp.asc "HTTP/2 200 OK"
+INFO:     10.16.42.137:6846 - "GET /api/sessions/27531dfa-6fba-48bb-84ef-e3476f0bbc4e HTTP/1.1" 200 OK
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/sessions?select=%2A&id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e "HTTP/2 200 OK"
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/messages?select=%2A&session_id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e&order=timestamp.asc "HTTP/2 200 OK"
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/deep_dive_messages?select=%2A&session_id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e&order=timestamp.asc "HTTP/2 200 OK"
+INFO:     10.16.42.137:6846 - "GET /api/sessions/27531dfa-6fba-48bb-84ef-e3476f0bbc4e HTTP/1.1" 200 OK
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/sessions?select=%2A&id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e "HTTP/2 200 OK"
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/messages?select=%2A&session_id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e&order=timestamp.asc "HTTP/2 200 OK"
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/deep_dive_messages?select=%2A&session_id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e&order=timestamp.asc "HTTP/2 200 OK"
+INFO:     10.16.14.243:17476 - "GET /api/sessions/27531dfa-6fba-48bb-84ef-e3476f0bbc4e HTTP/1.1" 200 OK
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/sessions?select=%2A&id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e "HTTP/2 200 OK"
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/messages?select=%2A&session_id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e&order=timestamp.asc "HTTP/2 200 OK"
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/deep_dive_messages?select=%2A&session_id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e&order=timestamp.asc "HTTP/2 200 OK"
+INFO:     10.16.14.243:17476 - "GET /api/sessions/27531dfa-6fba-48bb-84ef-e3476f0bbc4e HTTP/1.1" 200 OK
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/sessions?select=%2A&id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e "HTTP/2 200 OK"
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/messages?select=%2A&session_id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e&order=timestamp.asc "HTTP/2 200 OK"
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/deep_dive_messages?select=%2A&session_id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e&order=timestamp.asc "HTTP/2 200 OK"
+INFO:     10.16.14.243:17476 - "GET /api/sessions/27531dfa-6fba-48bb-84ef-e3476f0bbc4e HTTP/1.1" 200 OK
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/sessions?select=%2A&id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e "HTTP/2 200 OK"
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/messages?select=%2A&session_id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e&order=timestamp.asc "HTTP/2 200 OK"
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/deep_dive_messages?select=%2A&session_id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e&order=timestamp.asc "HTTP/2 200 OK"
+INFO:     10.16.42.137:60414 - "GET /api/sessions/27531dfa-6fba-48bb-84ef-e3476f0bbc4e HTTP/1.1" 200 OK
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/sessions?select=%2A&id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e "HTTP/2 200 OK"
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/messages?select=%2A&session_id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e&order=timestamp.asc "HTTP/2 200 OK"
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/deep_dive_messages?select=%2A&session_id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e&order=timestamp.asc "HTTP/2 200 OK"
+INFO:     10.16.14.243:50455 - "GET /api/sessions/27531dfa-6fba-48bb-84ef-e3476f0bbc4e HTTP/1.1" 200 OK
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/sessions?select=%2A&id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e "HTTP/2 200 OK"
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/messages?select=%2A&session_id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e&order=timestamp.asc "HTTP/2 200 OK"
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/deep_dive_messages?select=%2A&session_id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e&order=timestamp.asc "HTTP/2 200 OK"
+INFO:     10.16.42.137:2717 - "GET /api/sessions/27531dfa-6fba-48bb-84ef-e3476f0bbc4e HTTP/1.1" 200 OK
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/sessions?select=%2A&id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e "HTTP/2 200 OK"
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/messages?select=%2A&session_id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e&order=timestamp.asc "HTTP/2 200 OK"
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/deep_dive_messages?select=%2A&session_id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e&order=timestamp.asc "HTTP/2 200 OK"
+INFO:     10.16.14.243:7076 - "GET /api/sessions/27531dfa-6fba-48bb-84ef-e3476f0bbc4e HTTP/1.1" 200 OK
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/sessions?select=%2A&id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e "HTTP/2 200 OK"
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/messages?select=%2A&session_id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e&order=timestamp.asc "HTTP/2 200 OK"
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/deep_dive_messages?select=%2A&session_id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e&order=timestamp.asc "HTTP/2 200 OK"
+INFO:     10.16.14.243:7076 - "GET /api/sessions/27531dfa-6fba-48bb-84ef-e3476f0bbc4e HTTP/1.1" 200 OK
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/sessions?select=%2A&id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e "HTTP/2 200 OK"
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/messages?select=%2A&session_id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e&order=timestamp.asc "HTTP/2 200 OK"
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/deep_dive_messages?select=%2A&session_id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e&order=timestamp.asc "HTTP/2 200 OK"
+INFO:     10.16.14.243:7076 - "GET /api/sessions/27531dfa-6fba-48bb-84ef-e3476f0bbc4e HTTP/1.1" 200 OK
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/sessions?select=%2A&id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e "HTTP/2 200 OK"
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/messages?select=%2A&session_id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e&order=timestamp.asc "HTTP/2 200 OK"
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/deep_dive_messages?select=%2A&session_id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e&order=timestamp.asc "HTTP/2 200 OK"
+INFO:     10.16.42.137:56824 - "GET /api/sessions/27531dfa-6fba-48bb-84ef-e3476f0bbc4e HTTP/1.1" 200 OK
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/sessions?select=%2A&id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e "HTTP/2 200 OK"
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/messages?select=%2A&session_id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e&order=timestamp.asc "HTTP/2 200 OK"
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/deep_dive_messages?select=%2A&session_id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e&order=timestamp.asc "HTTP/2 200 OK"
+INFO:     10.16.42.137:56824 - "GET /api/sessions/27531dfa-6fba-48bb-84ef-e3476f0bbc4e HTTP/1.1" 200 OK
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/sessions?select=%2A&id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e "HTTP/2 200 OK"
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/messages?select=%2A&session_id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e&order=timestamp.asc "HTTP/2 200 OK"
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/deep_dive_messages?select=%2A&session_id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e&order=timestamp.asc "HTTP/2 200 OK"
+INFO:     10.16.14.243:36509 - "GET /api/sessions/27531dfa-6fba-48bb-84ef-e3476f0bbc4e HTTP/1.1" 200 OK
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/sessions?select=%2A&id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e "HTTP/2 200 OK"
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/messages?select=%2A&session_id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e&order=timestamp.asc "HTTP/2 200 OK"
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/deep_dive_messages?select=%2A&session_id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e&order=timestamp.asc "HTTP/2 200 OK"
+INFO:     10.16.14.243:36509 - "GET /api/sessions/27531dfa-6fba-48bb-84ef-e3476f0bbc4e HTTP/1.1" 200 OK
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/sessions?select=%2A&id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e "HTTP/2 200 OK"
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/messages?select=%2A&session_id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e&order=timestamp.asc "HTTP/2 200 OK"
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/deep_dive_messages?select=%2A&session_id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e&order=timestamp.asc "HTTP/2 200 OK"
+INFO:     10.16.42.137:63751 - "GET /api/sessions/27531dfa-6fba-48bb-84ef-e3476f0bbc4e HTTP/1.1" 200 OK
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/sessions?select=%2A&id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e "HTTP/2 200 OK"
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/messages?select=%2A&session_id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e&order=timestamp.asc "HTTP/2 200 OK"
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/deep_dive_messages?select=%2A&session_id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e&order=timestamp.asc "HTTP/2 200 OK"
+INFO:     10.16.42.137:63751 - "GET /api/sessions/27531dfa-6fba-48bb-84ef-e3476f0bbc4e HTTP/1.1" 200 OK
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/sessions?select=%2A&id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e "HTTP/2 200 OK"
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/messages?select=%2A&session_id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e&order=timestamp.asc "HTTP/2 200 OK"
+INFO:httpx:HTTP Request: GET https://nrzbagnazxvxtjftdpvn.supabase.co/rest/v1/deep_dive_messages?select=%2A&session_id=eq.27531dfa-6fba-48bb-84ef-e3476f0bbc4e&order=timestamp.asc "HTTP/2 200 OK"
+INFO:     10.16.14.243:10658 - "GET /api/sessions/27531dfa-6fba-48bb-84ef-e3476f0bbc4e HTTP/1.1" 200 OK
+ 

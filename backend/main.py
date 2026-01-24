@@ -568,14 +568,25 @@ async def start_session_with_upload(
 @app.get("/api/sessions/{session_id}/stream")
 async def stream_session_analysis(
     session_id: str,
+    token: Optional[str] = Query(None, description="JWT token for SSE auth"),
     current_user: Optional[Dict] = Depends(get_current_user)
 ):
     """
     Stream the research analysis as Server-Sent Events.
     
     This provides a chat-like experience with real-time updates from each agent.
+    Note: Token can be passed via query param since EventSource API cannot send headers.
     """
     logger.info(f"🔄 Stream endpoint called for session: {session_id}")
+    
+    # For SSE, token may come from query param instead of header
+    # (EventSource API cannot send custom headers)
+    effective_user = current_user
+    if not effective_user and token:
+        logger.info("📝 Attempting to verify token from query parameter")
+        effective_user = verify_supabase_token(token)
+        if effective_user:
+            logger.info(f"✅ Token verified from query param for user: {get_user_id(effective_user)}")
     
     session = session_store.get_session(session_id)
     if not session:
@@ -583,7 +594,8 @@ async def stream_session_analysis(
         raise HTTPException(status_code=404, detail="Session not found")
     
     # Check access permission
-    if not check_session_access(session, current_user):
+    if not check_session_access(session, effective_user):
+        logger.warning(f"❌ Access denied. Session user: {session.get('user_id')}, Request user: {get_user_id(effective_user)}")
         raise HTTPException(
             status_code=403, 
             detail="You don't have permission to access this session"
