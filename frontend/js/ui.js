@@ -4,10 +4,10 @@ export const ui = {
      */
     renderAgentCard(agentName, status, message) {
         const statusColors = {
-            'running': 'border-blue-500 bg-blue-50',
-            'completed': 'border-green-500 bg-green-50',
-            'error': 'border-red-500 bg-red-50',
-            'pending': 'border-gray-200 bg-white'
+            'running': 'border-blue-500 bg-blue-50 dark:bg-blue-900/20 dark:border-blue-500',
+            'completed': 'border-green-500 bg-green-50 dark:bg-green-900/20 dark:border-green-500',
+            'error': 'border-red-500 bg-red-50 dark:bg-red-900/20 dark:border-red-500',
+            'pending': 'border-gray-200 bg-white dark:bg-slate-800 dark:border-slate-700'
         };
 
         const icons = {
@@ -35,12 +35,12 @@ export const ui = {
         return `
             <div class="p-4 rounded-lg border ${colorClass} transition-all duration-300 animate-fade-in">
                 <div class="flex items-center gap-3 mb-2">
-                    <div class="p-2 rounded-full bg-white shadow-sm">
-                        <i data-lucide="${iconName}" class="w-5 h-5 text-slate-700"></i>
+                    <div class="p-2 rounded-full bg-white dark:bg-slate-900 shadow-sm">
+                        <i data-lucide="${iconName}" class="w-5 h-5 text-slate-700 dark:text-slate-300"></i>
                     </div>
-                    <h4 class="font-semibold text-sm text-slate-900">${name}</h4>
+                    <h4 class="font-semibold text-sm text-slate-900 dark:text-white">${name}</h4>
                 </div>
-                <p class="text-xs text-slate-600 line-clamp-2">${message || 'Waiting...'}</p>
+                <p class="text-xs text-slate-600 dark:text-slate-400 line-clamp-2">${message || 'Waiting...'}</p>
             </div>
         `;
     },
@@ -73,7 +73,7 @@ export const ui = {
     renderChatMessage(role, content) {
         const isUser = role === 'user';
         const alignClass = isUser ? 'justify-end' : 'justify-start';
-        const bgClass = isUser ? 'bg-accent text-white' : 'bg-gray-100 text-gray-800';
+        const bgClass = isUser ? 'bg-accent text-white' : 'bg-gray-100 dark:bg-slate-800 text-gray-800 dark:text-gray-200';
         const roundedClass = isUser ? 'rounded-br-none' : 'rounded-bl-none';
 
         return `

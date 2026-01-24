@@ -1,5 +1,5 @@
 
-# --- Deep Learning & Research Implementation ---
+# --- Deep Learning & qsearch Implementation ---
 torch==2.7.0 --extra-index-url https://download.pytorch.org/whl/cu128
 torchvision>=0.17.0    # For analyzing charts/images in research papers
 torchaudio>=2.2.0      # (Optional) For speech-related research papers
@@ -65,3 +65,5 @@ chromadb>=0.4.0
 
 # for real-time, ai-optimized web search capabilities used for RAG
 tavily-python>=0.7.12
+
+cryptography>=46.0.3

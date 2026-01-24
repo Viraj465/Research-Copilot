@@ -6,7 +6,6 @@ import { saveApiKeysToStorage } from './config.js';
 // Debug Logging System
 const debugLogs = [];
 window.getDebugLogs = () => {
-    console.log('📊 Debug Logs:', debugLogs);
     return debugLogs;
 };
 
@@ -20,8 +19,6 @@ function addDebugLog(level, message, data = null) {
         sessionId: state.sessionId
     };
     debugLogs.push(logEntry);
-    const logStr = `[${timestamp}] ${level}: ${message}${data ? ' ' + JSON.stringify(data) : ''}`;
-    console.log(logStr);
 }
 
 // State
@@ -89,7 +86,11 @@ const elements = {
     authModal: document.getElementById('auth-modal'),
     closeAuth: document.getElementById('close-auth'),
     authGoogleBtn: document.getElementById('auth-google-btn'),
-    authGithubBtn: document.getElementById('auth-github-btn')
+    authGithubBtn: document.getElementById('auth-github-btn'),
+    // Theme & Mobile
+    themeToggle: document.getElementById('theme-toggle'),
+    toggleSidebar: document.getElementById('toggle-sidebar'),
+    reportSidebar: document.getElementById('report-sidebar')
 };
 
 // Constants
@@ -114,6 +115,7 @@ function init() {
     lucide.createIcons();
     updateModelOptions();
     renderAgentConfigs();
+    initTheme();
 
     // Initialize Auth
     auth.init();
@@ -153,11 +155,11 @@ function init() {
 function setupEventListeners() {
     // Auth
     window.addEventListener('auth:change', handleAuthChange);
-    elements.signInBtn.addEventListener('click', () => elements.authModal.classList.remove('hidden'));
-    elements.closeAuth.addEventListener('click', () => elements.authModal.classList.add('hidden'));
-    elements.signOutBtn.addEventListener('click', () => auth.signOut());
-    elements.authGoogleBtn.addEventListener('click', () => auth.signInWithGoogle());
-    elements.authGithubBtn.addEventListener('click', () => auth.signInWithGithub());
+    if (elements.signInBtn) elements.signInBtn.addEventListener('click', () => elements.authModal.classList.remove('hidden'));
+    if (elements.closeAuth) elements.closeAuth.addEventListener('click', () => elements.authModal.classList.add('hidden'));
+    if (elements.signOutBtn) elements.signOutBtn.addEventListener('click', () => auth.signOut());
+    if (elements.authGoogleBtn) elements.authGoogleBtn.addEventListener('click', () => auth.signInWithGoogle());
+    if (elements.authGithubBtn) elements.authGithubBtn.addEventListener('click', () => auth.signInWithGithub());
 
     // Config
     elements.configBtn.addEventListener('click', () => elements.configModal.classList.remove('hidden'));
@@ -196,6 +198,37 @@ function setupEventListeners() {
     // Canvas: Search
     if (elements.canvasSearch) {
         elements.canvasSearch.addEventListener('input', handleCanvasSearch);
+    }
+
+    // Theme Toggle
+    if (elements.themeToggle) {
+        elements.themeToggle.addEventListener('click', toggleTheme);
+    }
+
+    // Mobile Sidebar Toggle
+    if (elements.toggleSidebar) {
+        elements.toggleSidebar.addEventListener('click', () => {
+            elements.reportSidebar.classList.toggle('hidden');
+        });
+    }
+}
+
+function initTheme() {
+    // Check localStorage or system preference
+    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+    } else {
+        document.documentElement.classList.remove('dark');
+    }
+}
+
+function toggleTheme() {
+    if (document.documentElement.classList.contains('dark')) {
+        document.documentElement.classList.remove('dark');
+        localStorage.theme = 'light';
+    } else {
+        document.documentElement.classList.add('dark');
+        localStorage.theme = 'dark';
     }
 }
 
@@ -273,21 +306,21 @@ function updateModelOptions() {
 
 function renderAgentConfigs() {
     elements.advancedSettings.innerHTML = AGENTS.map(agent => `
-        <div class="bg-gray-50 p-3 rounded border border-gray-200">
+        <div class="bg-gray-50 dark:bg-slate-900 p-3 rounded border border-gray-200 dark:border-slate-700">
             <div class="flex items-center justify-between mb-2">
-                <span class="text-sm font-medium text-gray-700">${agent.name}</span>
+                <span class="text-sm font-medium text-gray-700 dark:text-gray-300">${agent.name}</span>
                 <span class="text-xs text-gray-400 font-mono">${agent.id}</span>
             </div>
             <div class="grid grid-cols-2 gap-2">
                 <select id="provider-${agent.id}" onchange="window.updateAgentModelOptions('${agent.id}')" 
-                    class="text-sm px-2 py-1 border border-gray-300 rounded focus:ring-1 focus:ring-accent outline-none">
+                    class="text-sm px-2 py-1 border border-gray-300 dark:border-slate-600 rounded focus:ring-1 focus:ring-accent outline-none dark:bg-slate-800 dark:text-white">
                     <option value="">Use Global</option>
                     <option value="groq">Groq</option>
                     <option value="google">Google</option>
                     <option value="openai">OpenAI</option>
                 </select>
                 <select id="model-${agent.id}" disabled
-                    class="text-sm px-2 py-1 border border-gray-300 rounded focus:ring-1 focus:ring-accent outline-none bg-gray-100">
+                    class="text-sm px-2 py-1 border border-gray-300 dark:border-slate-600 rounded focus:ring-1 focus:ring-accent outline-none bg-gray-100 dark:bg-slate-800/50 dark:text-gray-400">
                     <option value="">Default Model</option>
                 </select>
             </div>
@@ -303,14 +336,16 @@ window.updateAgentModelOptions = (agentId) => {
     if (!provider) {
         modelSelect.innerHTML = '<option value="">Default Model</option>';
         modelSelect.disabled = true;
-        modelSelect.classList.add('bg-gray-100');
+        modelSelect.classList.add('bg-gray-100', 'dark:bg-slate-800/50', 'dark:text-gray-400');
+        modelSelect.classList.remove('dark:bg-slate-800', 'dark:text-white');
         return;
     }
 
     const models = MODELS[provider] || [];
     modelSelect.innerHTML = models.map(m => `<option value="${m}">${m}</option>`).join('');
     modelSelect.disabled = false;
-    modelSelect.classList.remove('bg-gray-100');
+    modelSelect.classList.remove('bg-gray-100', 'dark:bg-slate-800/50', 'dark:text-gray-400');
+    modelSelect.classList.add('dark:bg-slate-800', 'dark:text-white');
 };
 
 function saveConfiguration() {
@@ -361,6 +396,12 @@ async function handleStartUrl() {
     const url = elements.paperUrl.value.trim();
     if (!url) return alert('Please enter a URL');
 
+    // Auth Check
+    if (!auth.user) {
+        elements.authModal.classList.remove('hidden');
+        return;
+    }
+
     try {
         switchView('processing');
         startTimer();
@@ -379,6 +420,14 @@ async function handleUpload(e) {
     const file = e.target.files[0];
     if (!file) {
         addDebugLog('WARN', 'No file selected');
+        return;
+    }
+
+    // Auth Check
+    if (!auth.user) {
+        elements.authModal.classList.remove('hidden');
+        // Clear the input so the change event can fire again if they select the same file
+        e.target.value = '';
         return;
     }
 
@@ -501,7 +550,6 @@ function updateCurrentAgent(agent) {
 }
 
 function appendToCanvas(message) {
-    console.log('📝 Appending to canvas:', message.substring(0, 100) + '...');
     if (elements.canvasContent) {
         // Append as a new paragraph, rendered as markdown
         const para = document.createElement('div');
@@ -512,7 +560,6 @@ function appendToCanvas(message) {
         // Scroll to bottom
         if (elements.liveCanvas) {
             elements.liveCanvas.scrollTop = elements.liveCanvas.scrollHeight;
-            console.log('🔽 Scrolled canvas to bottom');
         }
     } else {
         console.error('❌ Canvas content element not found!');
@@ -520,7 +567,6 @@ function appendToCanvas(message) {
 }
 
 function addLog(agent, message) {
-    console.log(`📋 Log added [${agent}]:`, message.substring(0, 80) + '...');
     elements.logsContainer.insertAdjacentHTML('afterbegin', ui.renderLogEntry(agent, message));
 }
 
@@ -675,7 +721,6 @@ function scrollToBottom() {
 
 // Export Logic
 function handleExportReport() {
-    console.log('📥 Export button clicked');
 
     try {
         if (!state.reportData) {
@@ -751,7 +796,6 @@ function generateFullReportMarkdown() {
 
 function exportAsMarkdown(html, title) {
     try {
-        console.log('📝 Converting to Markdown...');
 
         // Simple HTML to Markdown conversion
         let markdown = `# ${title}\n\n`;
@@ -784,7 +828,6 @@ function exportAsMarkdown(html, title) {
             .replace(/\n{3,}/g, '\n\n');
 
         downloadFile(markdown, `${title.replace(/\s+/g, '-')}.md`, 'text/markdown');
-        console.log('✅ Markdown export successful');
         alert('✅ Report exported as Markdown');
 
     } catch (error) {
@@ -795,7 +838,6 @@ function exportAsMarkdown(html, title) {
 
 function exportAsHTML(html, title) {
     try {
-        console.log('📝 Exporting as HTML...');
 
         const fullHTML = `<!DOCTYPE html>
 <html lang="en">

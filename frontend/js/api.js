@@ -88,7 +88,6 @@ export const api = {
         }
 
         const data = await response.json();
-        console.log('Upload API response:', data);
         return data;
     },
 
@@ -145,9 +144,7 @@ export const api = {
         if (this.token) {
             url.searchParams.append('token', this.token);
         }
-        console.log('📡 Creating EventSource for URL:', url.toString());
         const es = new EventSource(url.toString());
-        console.log('📡 EventSource created with readyState:', es.readyState);
         return es;
     }
 };
