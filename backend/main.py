@@ -25,7 +25,7 @@ from langgraph.checkpoint.memory import MemorySaver
 from agents.graph import create_research_graph_with_checkpointer, stream_research_pipeline
 from agents.state import OverallState
 from agents.nodes.deep_dive import deep_dive_agent, DeepDiveRequest, DeepDiveResponse
-from utils.auth import get_current_user, require_auth, get_user_id, get_user_email
+from utils.auth import get_current_user, require_auth, get_user_id, get_user_email, verify_supabase_token
 from utils.supabase_store import SupabaseStore
 
 load_dotenv()

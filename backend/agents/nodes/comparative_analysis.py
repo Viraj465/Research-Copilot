@@ -8,6 +8,7 @@ from datetime import datetime
 from agents.agentSchema import ComparativeAnalysisSchema
 from prompts.prompts_template import COMPARATIVE_AGENT_SYSTEM_PROMPT
 from utils.llm_factory import LLMFactory
+from utils.safe_structured_output import safe_structured_invoke, create_empty_schema_instance
 
 logger = logging.getLogger(__name__)
 
@@ -258,38 +259,28 @@ Search Results (JSON): {results_json}
 Generate comparative analysis grounded ONLY in the search results above:""")
         ])
         
-        structured_llm = llm.with_structured_output(ComparativeAnalysisSchema, method="function_calling", strict=True)
-        chain = aggregation_prompt | structured_llm
+        # Use safe_structured_invoke with automatic JSON repair for robust LLM handling
+        aggregation_messages = aggregation_prompt.format_messages(
+            paper_title=paper_title,
+            methodology=str(methodology)[:800],
+            results=str(results)[:800],
+            domains=", ".join([str(d) for d in domain_tags[:3]]),
+            results_json=results_json
+        )
         
-        try:
-            analysis = chain.invoke({
-                "paper_title": paper_title,
-                "methodology": str(methodology)[:800],
-                "results": str(results)[:800],
-                "domains": ", ".join([str(d) for d in domain_tags[:3]]),
-                "results_json": results_json
-            })
-        except Exception as e:
-            print(f"⚠️ Structured output failed: {e}")
-            # Fallback: create analysis manually
-            comparative_analysis = {
-                "comparative_analysis_results": [],
-                "comparative_analysis_summary": f"Analysis based on {len(comparison_results)} sources. Due to limited data, detailed comparisons could not be generated.",
-                "comparative_analysis_recommendation": "Additional research needed for comprehensive comparison.",
-                "comparative_analysis_status": "Partial - limited comparison data",
-                "comparative_analysis_date": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                "comparative_analysis_author": "ResearchCopilot",
-                "comparative_analysis_title": f"Comparative Analysis - {paper_title}",
-                "comparative_analysis_publication": "N/A",
-                "react_steps": react_steps,
-                "sources_used": len(comparison_results)
-            }
-            return {"comparative_analysis": comparative_analysis}
+        analysis = safe_structured_invoke(
+            llm=llm,
+            schema=ComparativeAnalysisSchema,
+            messages=aggregation_messages,
+            max_retries=2,
+            retry_delay=1.0,
+            fallback_value=create_empty_schema_instance(ComparativeAnalysisSchema)
+        )
 
         if not analysis.comparative_analysis_date:
             analysis.comparative_analysis_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         
-        comparative_analysis = analysis.dict()
+        comparative_analysis = analysis.model_dump()
         
         # Add ReAct trace for transparency
         comparative_analysis["react_steps"] = react_steps

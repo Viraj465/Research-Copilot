@@ -1,12 +1,12 @@
 import os
 from agents.state import OverallState
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_groq import ChatGroq
 from pydantic import BaseModel, Field
 from datetime import datetime
 from agents.agentSchema import SOTATrackerSchema
 from prompts.prompts_template import SOTA_TRACKER_SYSTEM_PROMPT
 from utils.llm_factory import LLMFactory
+from utils.safe_structured_output import safe_structured_invoke, create_empty_schema_instance
 
 def sota_tracker_agent(state: OverallState) -> OverallState:
     """
@@ -67,24 +67,32 @@ Domain: {domains}
 Trends: {trends}
 
 Provide SOTA analysis using the SOTATrackerSchema tool.
-IMPORTANT: You must call the tool 'SOTATrackerSchema' with your analysis. Do not output markdown text.""")
+IMPORTANT: You must call the tool 'SOTATrackerSchema' with your analysis. Do not output markdown text.
+Output valid JSON only - no markdown formatting like **bold** in keys or values.""")
         ])
         
-        structured_llm = llm.with_structured_output(SOTATrackerSchema)
-        chain = prompt | structured_llm
+        # Use safe_structured_invoke with automatic JSON repair for robust LLM handling
+        messages = prompt.format_messages(
+            level1=level1_summary[:2000],
+            methodology=methodology_summary[:1000],
+            results=results_summary[:1000],
+            domains=", ".join([str(d) for d in domain_tags[:3]]),
+            trends=str(web_research.get("trend_signals") or {})[:500]
+        )
         
-        analysis = chain.invoke({
-            "level1": level1_summary[:2000],
-            "methodology": methodology_summary[:1000],
-            "results": results_summary[:1000],
-            "domains": ", ".join([str(d) for d in domain_tags[:3]]),
-            "trends": str(web_research.get("trend_signals") or {})[:500]
-        })
+        analysis = safe_structured_invoke(
+            llm=llm,
+            schema=SOTATrackerSchema,
+            messages=messages,
+            max_retries=2,
+            retry_delay=1.0,
+            fallback_value=create_empty_schema_instance(SOTATrackerSchema)
+        )
         
         if not analysis.sota_tracker_date:
             analysis.sota_tracker_date = datetime.now().strftime("%Y-%m-%d")
         
-        sota_tracker = analysis.dict()
+        sota_tracker = analysis.model_dump()
         
         print(f"✅ SOTA TRACKER COMPLETE")
         print(f"   Title: {analysis.sota_tracker_title}")

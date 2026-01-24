@@ -6,6 +6,7 @@ from prompts.prompts_template import REPORT_GENERATION_SYSTEM_PROMPT
 from dotenv import load_dotenv
 import logging
 from utils.llm_factory import LLMFactory
+from utils.safe_structured_output import safe_structured_invoke, create_empty_schema_instance
 
 logger = logging.getLogger(__name__)
 load_dotenv()
@@ -97,38 +98,41 @@ Do NOT return plain text - use the structured schema!"""),
                         Create comprehensive report using the ReportGenerationSchema:
                     """)])
         
-        structured_llm = llm.with_structured_output(ReportGenerationSchema, method="function_calling", strict=True)
-        chain = prompt | structured_llm
+        # Use safe_structured_invoke with automatic JSON repair for robust LLM handling
+        report_messages = prompt.format_messages(
+            level3=level_3,
+            level2=level_2[:1500],
+            level1=level_1[:1000],
+            web_section=web_section,
+            sota_section=sota_section,
+            comparative_section=comparative_section,
+            direction=str(direction_advisor)[:500]
+        )
         
-        try:
-            report = chain.invoke({
-                "level3": level_3,
-                "level2": level_2[:1500],
-                "level1": level_1[:1000],
-                "web_section": web_section,
-                "sota_section": sota_section,
-                "comparative_section": comparative_section,
-                "direction": str(direction_advisor)[:500]
-            })
-        except Exception as e:
-            logger.error(f"Structured output failed: {e}")
-            print(f"⚠️ Structured output failed, creating fallback report...")
-            # Create fallback report
-            from pydantic import ValidationError
-            report = ReportGenerationSchema(
-                executive_summary=level_3[:1000] if level_3 else "Report generation encountered an error.",
-                research_findings=level_2[:1000] if level_2 else "Limited findings available.",
-                technical_landscape=str(web_section)[:800] if web_section else "Technical landscape analysis pending.",
-                sota_overview={"summary": str(sota_tracker.get("sota_tracker_summary", "N/A"))[:500], "key_points": []},
-                comparative_analysis={"summary": str(comparative_analysis.get("comparative_analysis_summary", "N/A"))[:500], "key_comparisons": []},
-                trend_analysis={"trends": [], "insights": "Trend analysis pending"},
-                ecosystem_map={"key_players": web_research.get("key_players", [])[:5] if web_research else [], "technologies": []},
-                recommendations={"recommendations": [], "priority": "Further analysis recommended"},
-                future_directions={"directions": [], "opportunities": []},
-                export_formats=["markdown", "json"]
-            )
+        # Create a robust fallback in case all retries fail
+        fallback_report = ReportGenerationSchema(
+            executive_summary=level_3[:1000] if level_3 else "Report generation encountered an error.",
+            research_findings=level_2[:1000] if level_2 else "Limited findings available.",
+            technical_landscape=str(web_section)[:800] if web_section else "Technical landscape analysis pending.",
+            sota_overview={"summary": str(sota_tracker.get("sota_tracker_summary", "N/A"))[:500], "key_points": []},
+            comparative_analysis={"summary": str(comparative_analysis.get("comparative_analysis_summary", "N/A"))[:500], "key_comparisons": []},
+            trend_analysis={"trends": [], "insights": "Trend analysis pending"},
+            ecosystem_map={"key_players": web_research.get("key_players", [])[:5] if web_research else [], "technologies": []},
+            recommendations={"recommendations": [], "priority": "Further analysis recommended"},
+            future_directions={"directions": [], "opportunities": []},
+            export_formats=["markdown", "json"]
+        )
+        
+        report = safe_structured_invoke(
+            llm=llm,
+            schema=ReportGenerationSchema,
+            messages=report_messages,
+            max_retries=2,
+            retry_delay=1.0,
+            fallback_value=fallback_report
+        )
 
-        report_result = report.dict()
+        report_result = report.model_dump()
         
         logger.info("\n" + "=" *70)
         print(f"\n   ✓ Report Generation Complete:")

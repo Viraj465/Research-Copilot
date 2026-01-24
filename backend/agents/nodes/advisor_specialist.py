@@ -3,10 +3,10 @@ from typing import List, Dict, Any
 from agents.state import OverallState
 from agents.tools.web_search import tavily_search
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_groq import ChatGroq
 from agents.agentSchema import SearchQualityAssessment, SpecialistRoutingDecision
 from prompts.prompts_template import ADVISOR_SPECIALIST_ROUTING_SYSTEM_PROMPT
 from utils.llm_factory import LLMFactory
+from utils.safe_structured_output import safe_structured_invoke, create_empty_schema_instance
 
 def advisor_specialist_agent(state: OverallState) -> OverallState:
     """
@@ -102,16 +102,23 @@ Key Players: {players}
 Assess quality:""")
         ])
         
-        structured_llm = llm.with_structured_output(SearchQualityAssessment)
-        chain = quality_prompt | structured_llm
+        # Use safe_structured_invoke with automatic JSON repair for robust LLM handling
+        quality_messages = quality_prompt.format_messages(
+            domains=", ".join([str(d) for d in domain_tags[:3]]),
+            contributions=" | ".join([str(c) for c in contributions[:2]]),
+            level2=level2[:1000],
+            result_count=len(web_research.get("retrieval_results", [])),
+            players=", ".join([str(p) for p in (web_research.get("key_players") or [])[:5]])
+        )
         
-        assessment = chain.invoke({
-            "domains": ", ".join([str(d) for d in domain_tags[:3]]),
-            "contributions": " | ".join([str(c) for c in contributions[:2]]),
-            "level2": level2[:1000],
-            "result_count": len(web_research.get("retrieval_results", [])),
-            "players": ", ".join([str(p) for p in (web_research.get("key_players") or [])[:5]])
-        })
+        assessment = safe_structured_invoke(
+            llm=llm,
+            schema=SearchQualityAssessment,
+            messages=quality_messages,
+            max_retries=2,
+            retry_delay=1.0,
+            fallback_value=create_empty_schema_instance(SearchQualityAssessment)
+        )
         
         print(f"   ✓ Quality: {assessment.search_quality_score:.2f}")
         print(f"   ✓ Sufficient: {assessment.is_sufficient}")
@@ -151,16 +158,23 @@ Assess quality:""")
                         Which specialists?
                     """)])
         
-        structured_llm_routing = llm.with_structured_output(SpecialistRoutingDecision)
-        chain_routing = routing_prompt | structured_llm_routing
+        # Use safe_structured_invoke for robust routing decision
+        routing_messages = routing_prompt.format_messages(
+            level3=level3[:500],
+            level2=level2[:1000],
+            domains=", ".join([str(d) for d in domain_tags[:3]]),
+            novelty=paper_analysis.get("novelty", "Unknown"),
+            trends=str(web_research.get("trend_signals") or {})[:300]
+        )
         
-        decision = chain_routing.invoke({
-            "level3": level3[:500],
-            "level2": level2[:1000],
-            "domains": ", ".join([str(d) for d in domain_tags[:3]]),
-            "novelty": paper_analysis.get("novelty", "Unknown"),
-            "trends": str(web_research.get("trend_signals") or {})[:300]
-        })
+        decision = safe_structured_invoke(
+            llm=llm,
+            schema=SpecialistRoutingDecision,
+            messages=routing_messages,
+            max_retries=2,
+            retry_delay=1.0,
+            fallback_value=create_empty_schema_instance(SpecialistRoutingDecision)
+        )
         
         print(f"   ✓ Routing: {', '.join([str(s) for s in decision.needed_specialists])}")
         print(f"   ✓ Priorities: {decision.specialist_priorities}")
@@ -169,8 +183,8 @@ Assess quality:""")
         state_update = {
             "next_agents": decision.needed_specialists,
             "advisor_metadata": {
-                "quality_assessment": assessment.dict(),
-                "routing_decision": decision.dict()
+                "quality_assessment": assessment.model_dump(),
+                "routing_decision": decision.model_dump()
             }
         }
         

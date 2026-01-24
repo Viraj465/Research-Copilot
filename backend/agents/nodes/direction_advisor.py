@@ -3,11 +3,11 @@ import logging
 from agents.state import OverallState
 from langchain_core.prompts import ChatPromptTemplate
 from agents.agentSchema import DirectionAdvisorSchema
-from langchain_groq import ChatGroq
 from pydantic import BaseModel, Field
 from typing import List, Dict, Any
 from prompts.prompts_template import DIRECTION_ADVISOR_SYSTEM_PROMPT
 from utils.llm_factory import LLMFactory
+from utils.safe_structured_output import safe_structured_invoke, create_empty_schema_instance
 
 logger = logging.getLogger(__name__)
 
@@ -61,11 +61,11 @@ def direction_advisor_node(state: OverallState) -> OverallState:
 
                         Provide strategic direction using the DirectionAdvisorSchema tool.
                         IMPORTANT: You must ONLY call the tool 'DirectionAdvisorSchema'. Do not output markdown text.
+                        Output valid JSON only - no markdown formatting like **bold** in keys or values.
                     """)])
 
-        structured_llm = llm.with_structured_output(DirectionAdvisorSchema)
-        
-        analysis = structured_llm.invoke(prompt.format_messages(
+        # Format messages for the LLM
+        messages = prompt.format_messages(
             level3=level3[:3000],
             level2=level2[:3000],
             contributions=", ".join([str(c) for c in contributions[:5]]),
@@ -75,9 +75,20 @@ def direction_advisor_node(state: OverallState) -> OverallState:
             trends=str(trend_signals)[:2000] if trend_signals else "N/A",
             sota=str(sota_tracker.get("sota_tracker_summary", ""))[:2000] if sota_tracker else "N/A",
             comparative=str(comparative_analysis.get("comparative_analysis_summary", ""))[:2000] if comparative_analysis else "N/A"
-        ))
+        )
+        
+        # Use safe_structured_invoke with automatic JSON repair and retry logic
+        # This handles malformed JSON from LLMs (especially Groq/Llama models)
+        analysis = safe_structured_invoke(
+            llm=llm,
+            schema=DirectionAdvisorSchema,
+            messages=messages,
+            max_retries=2,
+            retry_delay=1.0,
+            fallback_value=create_empty_schema_instance(DirectionAdvisorSchema)
+        )
 
-        direction_advisor_result = analysis.dict()
+        direction_advisor_result = analysis.model_dump()
 
         print(f" ✅ Direction Advisor Complete")
         print(f"   Gaps: {len(analysis.gaps_analysis_results)}")
