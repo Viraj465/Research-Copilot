@@ -6,7 +6,6 @@ AgentFlowv3.png
 *.zip
 *.md
 .txt
-*.png
 *.json
 __pycache__
 __pycache__/
