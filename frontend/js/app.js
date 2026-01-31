@@ -96,8 +96,8 @@ const elements = {
 // Constants
 const MODELS = {
     'groq': ['llama-3.1-8b-instant', 'llama-3.3-70b-versatile', "meta-llama/llama-guard-4-12b", 'openai/gpt-oss-120b', 'openai/gpt-oss-20b'],
-    'google': ['gemini-2.5-flash', 'gemini-2.5-flash-lite'],
-    'openai': ['gpt-4.1-mini', 'gpt-4.1', 'gpt-5.1', 'gpt-5.2']
+    'google': ['gemini-3-pro-preview','gemini-3-flash-preview','gemini-2.5-pro','gemma-3-12B','gemini-2.5-flash', 'gemini-2.5-flash-lite'],
+    'openai': ['gpt-5-mini-2025-08-07','o3-deep-research-2025-06-26','gpt-4.1-mini', 'gpt-4.1', 'gpt-5.1', 'gpt-5.2']
 };
 
 const AGENTS = [
