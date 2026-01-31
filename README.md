@@ -5,7 +5,8 @@ AI-Powered Deep Research Assistant using LLMs & Multi-Agent Architecture.
 - Live Demo: https://research-copilot-tau.vercel.app/
 - GitHub Repository: https://github.com/Viraj465/Research-Copilot.git
 
-![Research Copilot](ResearchCopilot-Architecture.png)
+![Research Copilot](./ResearchCopilot-Architecture.png)
+
 
 
 # 🚀 Overview
